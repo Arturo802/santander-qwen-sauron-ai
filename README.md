@@ -1,5 +1,3 @@
-# santander-qwen-sauron-ai
-Unificando herramientas de SantanderAI y Qwen 2.5 para la detección de fraude y DLP. El ojo que todo lo ve para la seguridad financiera. 👁️🛡️
 
 # 👁️ Santander Qwen Sauron AI
 
