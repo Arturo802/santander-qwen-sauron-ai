@@ -1,4 +1,4 @@
-
+Markdown
 # 👁️ Santander Qwen Sauron AI
 
 > "Un anillo para gobernarlos a todos, un modelo para detectarlos a todos..." 
@@ -54,7 +54,6 @@ Prueba de bloqueo por intento de Envenenamiento de Datos (Data Poisoning):
 
 PowerShell
 py -c "from src.ai_python.qwen_integration.sentinel_agents import DataPoisoningSentinel; DataPoisoningSentinel.audit_transaction({'txId': 'tx-BAD', 'amount': 999999999})"
-
 Prueba de bloqueo por intento de Jailbreak en entradas de texto:
 
 PowerShell
@@ -65,6 +64,20 @@ Para verificar que el backend procesa y persiste transacciones reales en Oracle 
 
 PowerShell
 Invoke-RestMethod -Uri "http://localhost:8080/api/ingest/transactions" -Method Post -ContentType "application/json" -Body '[{"txId":"tx-999", "srcId":"acc-123", "dstId":"acc-456", "amount":50000, "timestamp":"2026-09-04T16:00:00", "isFraud":true}]'
+
+Nota:
+Si por algún motivo la carga se detiene en el servidor del backend-java, puedes volverlo a poner en marcha con el comando mvn spring-boot:run una vez ya esté iniciado y con la activación exitosa.
+Puedes usar estos comandos en una segunda terminal:
+
+py -m gen_fraud_graph.generator
+
+py -m gen_fraud_graph.cli
+
+py -m gen_fraud_graph.cli --accounts 1000 --transactions 5000
+
+py -m gen_fraud_graph.cli --scale 0.001
+
+Ya que puede deberse a algún problema con los procesamientos por los lotes de las transacciones y cuentas, luego solo se debe esperar algunos segundos.
 
 🧪 Estado de Pruebas (Test Suites)
 El proyecto cuenta con validación estricta de componentes:
@@ -77,4 +90,3 @@ Angular: Pruebas unitarias de servicios y componentes configuradas mediante el C
 
 📄 Licencia
 Este proyecto se rige bajo la licencia Apache 2.0, respetando y manteniendo los avisos originales de los repositorios de SantanderAI y Qwen 2.5.
-
