@@ -1,0 +1,19 @@
+# CODEOWNERS — santander-qwen-sauron-ai
+# https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+#
+# The LAST matching pattern wins. Keep broad rules at the top.
+
+# ── Default ──────────────────────────────────────────────────────────────
+# Todo el código base y submódulos (Python, Java, Base de Datos)
+*                       @Arturo802
+
+# ── CI/CD + GitHub config ────────────────────────────────────────────────
+# Cambios en workflows, plantillas de issues y PRs
+/.github/               @Arturo802
+
+# ── Legal & security policy ──────────────────────────────────────────────
+# Archivos legales y de seguridad
+LICENSE                 @Arturo802
+NOTICE                  @Arturo802
+SECURITY.md             @Arturo802
+CODEOWNERS              @Arturo802

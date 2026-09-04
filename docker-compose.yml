@@ -1,0 +1,72 @@
+services:
+  # ─────────────────────────────────────────────
+  # 1. CAPA DE MENSAJERÍA (Apache Kafka + Zookeeper)
+  # ─────────────────────────────────────────────
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.5.16
+    container_name: sauron-zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    networks:
+      - saron-net
+
+  kafka:
+    image: confluentinc/cp-kafka:7.5.16
+    container_name: sauron-kafka
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    networks:
+      - saron-net
+
+  # ─────────────────────────────────────────────
+  # 2. CAPA DE DATOS (Oracle Database Developer)
+  # ─────────────────────────────────────────────
+  oracle-db:
+    image: gvenzl/oracle-free:23.26.1-slim
+    container_name: sauron-oracle-db
+    environment:
+      - ORACLE_PASSWORD=SauronSecure2026!
+    ports:
+      - "1521:1521"
+    volumes:
+      - oracle_data:/opt/oracle/oradata
+      - ./database/plsql:/docker-entrypoint-initdb.d # Para cargar scripts PL/SQL automáticos
+    networks:
+      - saron-net
+
+  # ─────────────────────────────────────────────
+  # 3. MOTOR DE INTELIGENCIA ARTIFICIAL (Python - Qwen & DLP) - Comentado temporalmente
+  # ─────────────────────────────────────────────
+  # ai-engine:
+  #   build:
+  #     context: .
+  #     dockerfile: docker/Dockerfile.ai
+  #   container_name: sauron-ai-engine
+  #   ports:
+  #     - "8000:8000"
+  #   volumes:
+  #     - ./src/ai-python:/app
+  #   environment:
+  #     - KAFKA_BOOTSTRAP_SERVERS=kafka:29092
+  #   depends_on:
+  #     - kafka
+  #   networks:
+  #     - saron-net
+  #   command: python -m qwen_integration.qwen_engine
+
+networks:
+  saron-net:
+    driver: bridge
+
+volumes:
+  oracle_data:

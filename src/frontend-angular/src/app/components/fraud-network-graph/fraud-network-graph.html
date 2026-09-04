@@ -1,0 +1,66 @@
+<div class="fraud-container" style="padding: 20px; font-family: Arial, sans-serif;">
+  <!-- Cabecera -->
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+    <h2>🕸️ Sauron AI — Módulo de Redes y Grafos de Fraude</h2>
+    <button routerLink="/" class="btn-page" style="background-color: #333; color: #fff; font-weight: bold; padding: 8px 15px; border-radius: 4px; cursor: pointer; border: none;">
+      ← Volver al Panel Principal
+    </button>
+  </div>
+
+  <!-- Indicador de carga -->
+  <div *ngIf="loading" style="text-align: center; padding: 40px; font-size: 18px; color: #666;">
+    🔄 Analizando topología de red y extrayendo nodos...
+  </div>
+
+  <!-- Contenido del Grafo Analítico -->
+  <div *ngIf="!loading">
+    <!-- Tarjetas de Resumen de Red -->
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 25px;">
+      <div style="background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); border-left: 5px solid #004481;">
+        <h4 style="margin: 0; color: #555; font-size: 14px;">Total Cuentas (Nodos)</h4>
+        <p style="margin: 10px 0 0 0; font-size: 24px; font-weight: bold; color: #004481;">{{ totalNodes }}</p>
+      </div>
+      <div style="background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); border-left: 5px solid #004481;">
+        <h4 style="margin: 0; color: #555; font-size: 14px;">Total Transacciones (Aristas)</h4>
+        <p style="margin: 10px 0 0 0; font-size: 24px; font-weight: bold; color: #004481;">{{ totalEdges }}</p>
+      </div>
+      <div style="background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); border-left: 5px solid #ec0000;">
+        <h4 style="margin: 0; color: #555; font-size: 14px;">Cuentas en Anillos de Fraude</h4>
+        <p style="margin: 10px 0 0 0; font-size: 24px; font-weight: bold; color: #ec0000;">{{ fraudNodesCount }}</p>
+      </div>
+    </div>
+
+    <!-- Visor de Conexiones Sospechosas -->
+    <div style="background: #fff; padding: 25px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+      <h3 style="color: #ec0000; margin-top: 0; margin-bottom: 15px;">⚠️ Topología de Conexiones Fraudulentas Recientes</h3>
+      <p style="color: #666; font-size: 14px; margin-bottom: 20px;">
+        Relación directa entre cuentas de origen y destino identificadas con patrones de riesgo en la red.
+      </p>
+
+      <table style="width: 100%; border-collapse: collapse; text-align: left;">
+        <thead>
+          <tr style="background-color: #004481; color: white;">
+            <th style="padding: 10px;">ID Transacción</th>
+            <th style="padding: 10px;">Cuenta Origen (Nodo A)</th>
+            <th style="padding: 10px;">Cuenta Destino (Nodo B)</th>
+            <th style="padding: 10px;">Monto</th>
+            <th style="padding: 10px;">Estado de Red</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let tx of recentFraudConnections" style="border-bottom: 1px solid #eee;">
+            <td style="padding: 10px; font-weight: bold;">{{ tx.txId }}</td>
+            <td style="padding: 10px; color: #d9534f; font-weight: bold;">{{ tx.srcId }}</td>
+            <td style="padding: 10px; color: #d9534f; font-weight: bold;">{{ tx.dstId }}</td>
+            <td style="padding: 10px;">${{ tx.amount }}</td>
+            <td style="padding: 10px;">
+              <span style="background-color: #f2dede; color: #a94442; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold;">
+                🚨 Alto Riesgo / Fraude
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
